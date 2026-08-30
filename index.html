@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRITICAL INCIDENT & CLINICAL HANDOVER</title>
+  <style>
+    :root {
+      --bg: #090d13;
+      --card-bg: #121820;
+      --border: #223040;
+      --accent-red: #ff5370;
+      --med-teal: #39adb5;
+      --success: #50fa7b;
+      --text: #c5d1de;
+      --heading: #f3f6fa;
+      --font-mono: "Fira Code", "Courier New", Courier, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 760px;
+      width: 100%;
+    }
+
+    .terminal-window {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Top Bar */
+    .header-bar {
+      background: #17212b;
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .status-tags {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-p0 { background: rgba(255, 83, 112, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .badge-code { background: rgba(57, 173, 181, 0.15); color: var(--med-teal); border: 1px solid var(--med-teal); }
+
+    .content {
+      padding: 2rem;
+    }
+
+    h1 {
+      color: var(--heading);
+      font-size: 1.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .meta-line {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #8295a8;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Vitals / Telemetry Monitor Panel */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      background: #0b1118;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .vital-box {
+      border-left: 2px solid var(--med-teal);
+      padding-left: 0.6rem;
+    }
+
+    .vital-label {
+      font-size: 0.7rem;
+      color: #7a8c9e;
+      text-transform: uppercase;
+    }
+
+    .vital-value {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--heading);
+    }
+
+    .vital-alert {
+      color: var(--accent-red);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* SOAP & Technical Sections */
+    h2 {
+      color: var(--heading);
+      font-size: 1.05rem;
+      margin: 1.2rem 0 0.4rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    p {
+      margin-bottom: 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .soap-tag {
+      color: var(--med-teal);
+      font-weight: bold;
+    }
+
+    /* Sincere Box */
+    .sincere-box {
+      background: rgba(57, 173, 181, 0.06);
+      border-left: 3px solid var(--med-teal);
+      padding: 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+
+    .sincere-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin-left: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    /* Actions Panel */
+    .action-panel {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #17212b;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px dashed var(--border);
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.75rem 1.4rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.2s all ease;
+      margin: 0.4rem;
+    }
+
+    .btn-discharge {
+      background: var(--success);
+      color: #090d13;
+    }
+
+    .btn-discharge:hover {
+      background: #46e06f;
+      transform: translateY(-1px);
+    }
+
+    .btn-stat {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-stat:hover {
+      background: var(--border);
+    }
+
+    #discharge-order {
+      display: none;
+      margin-top: 1.2rem;
+      padding: 1rem;
+      background: rgba(80, 250, 123, 0.1);
+      border: 1px solid var(--success);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      color: var(--success);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="terminal-window">
+    
+    <div class="header-bar">
+      <div class="status-tags">
+        <span class="badge badge-p0">SEVERITY: P0 CRITICAL</span>
+        <span class="badge badge-code">CODE: BROKEN_HEART</span>
+      </div>
+      <div>UNIT: CARDIAC / DEVOPS</div>
+    </div>
+
+    <div class="content">
+      <h1>Clinical Chart & Root Cause Analysis (RCA)</h1>
+      <div class="meta-line">
+        CHART ID: #SORRY-001 &bull; ATTENDING ENGINEER: Your Boyfriend &bull; CHARGE NURSE: My Favorite Person
+      </div>
+
+      <div class="telemetry-grid">
+        <div class="vital-box">
+          <div class="vital-label">Patient Remorse</div>
+          <div class="vital-value vital-alert">100% (CRIT)</div>
+        </div>
+        <div class="vital-box">
+          <div class="vital-label">Brain Latency</div>
+          <div class="vital-value vital-alert">&infin; ms</div>
+        </div>
+        <div class="vital-box">
+          <div class="vital-label">Love Saturation (SpO2)</div>
+          <div class="vital-value">100% ON RA</div>
+        </div>
+        <div class="vital-box">
+          <div class="vital-label">Rx Required</div>
+          <div class="vital-value">Hugs STAT</div>
+        </div>
+      </div>
+
+      <h2><span class="soap-tag">[S]</span> Subjective / User Triage</h2>
+      <p>
+        Charge Nurse reported high emotional stress levels secondary to poor listening, thoughtless behavior, 
+        and inadequate emotional bandwidth from the Attending Engineer. Patient (me) admits full culpability with no defense.
+      </p>
+
+      <h2><span class="soap-tag">[O]</span> Objective / Diagnostic Telemetry</h2>
+      <p>
+        System inspection shows massive packet loss in active listening protocols. Core CPU was throttled by 
+        foolishness, resulting in an unhandled exception that hurt someone who spends her shifts saving lives and deserves zero drama at home.
+      </p>
+
+      <h2><span class="soap-tag">[A]</span> Assessment / Sincere Note</h2>
+      <div class="sincere-box">
+        <p><strong>Dearest [Her Name], RN, BSN, Holder of My Heart,</strong></p>
+        <p>
+          Jokes and code aside, I am truly so sorry for [mention what happened]. You work so hard, give so much of yourself taking care of others on long, exhausting shifts, and the last thing you need is stress or frustration coming from me.
+        </p>
+        <p>
+          I hate that I caused you hurt. I value your feelings, your peace, and our relationship more than anything. I want to be your safe harbor to decompress, not an added headache.
+        </p>
+      </div>
+
+      <h2><span class="soap-tag">[P]</span> Standing Orders & Hotfix Plan</h2>
+      <ul>
+        <li><strong>Rx: Post-Shift Care:</strong> High-dose foot/back massages administered PRN (as needed), no expiration date.</li>
+        <li><strong>Rx: Nutrition & Hydration:</strong> Unconditional delivery of your favorite food, coffee, or treats STAT.</li>
+        <li><strong>Hotfix Deploy:</strong> 0% defensiveness, 100% active listening, and continuous emotional integration tests.</li>
+      </ul>
+
+      <hr />
+
+      <div class="action-panel">
+        <p style="font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: 1rem;">
+          <code>Awaiting Signed Discharge Orders & Forgiveness:</code>
+        </p>
+        <button class="btn btn-discharge" onclick="signDischarge()">Sign Discharge & Forgive ❤️</button>
+        <button class="btn btn-stat" id="dodge-btn" onmouseover="dodge()">Withhold IV Hydration 🧋</button>
+        
+        <div id="discharge-order">
+          ✔ <strong>DISCHARGE APPROVED:</strong> Patient forgiven. Hotfix merged into main. Transferring to cuddle care unit STAT! 🏥🚀
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function signDischarge() {
+    const box = document.getElementById('discharge-order');
+    box.style.display = 'block';
+    document.querySelector('.terminal-window').style.borderColor = '#50fa7b';
+  }
+
+  function dodge() {
+    const btn = document.getElementById('dodge-btn');
+    const x = (Math.random() - 0.5) * 140;
+    const y = (Math.random() - 0.5) * 70;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+</script>
+
+</body>
+</html>
