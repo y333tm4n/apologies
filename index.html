@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>CRITICAL INCIDENT & CLINICAL HANDOVER</title>
   <style>
     :root {
@@ -14,14 +14,15 @@
       --success: #50fa7b;
       --text: #c5d1de;
       --heading: #f3f6fa;
-      --font-mono: "Fira Code", "Courier New", Courier, monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "Fira Code", Consolas, "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -29,9 +30,10 @@
       color: var(--text);
       font-family: var(--font-sans);
       line-height: 1.6;
-      padding: 2rem 1rem;
+      padding: 1rem 0.75rem;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
     }
 
     .container {
@@ -48,27 +50,30 @@
       transition: border-color 0.3s ease;
     }
 
-    /* Top Bar */
+    /* Top Header Bar */
     .header-bar {
       background: #17212b;
-      padding: 0.75rem 1.2rem;
+      padding: 0.75rem 1rem;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+      gap: 0.5rem;
       border-bottom: 1px solid var(--border);
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     .status-tags {
       display: flex;
-      gap: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
     }
 
     .badge {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 0.2rem 0.6rem;
+      padding: 0.2rem 0.5rem;
       border-radius: 4px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -77,50 +82,69 @@
     .badge-code { background: rgba(57, 173, 181, 0.15); color: var(--med-teal); border: 1px solid var(--med-teal); }
 
     .content {
-      padding: 2rem;
+      padding: 1.25rem;
+    }
+
+    @media (min-width: 600px) {
+      body { padding: 2rem 1rem; }
+      .content { padding: 2rem; }
+      .header-bar { font-size: 0.8rem; }
     }
 
     h1 {
       color: var(--heading);
-      font-size: 1.5rem;
-      margin-bottom: 0.4rem;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+
+    @media (min-width: 600px) {
+      h1 { font-size: 1.5rem; }
     }
 
     .meta-line {
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      font-size: 0.75rem;
       color: #8295a8;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
+      word-break: break-word;
     }
 
-    /* Vitals / Telemetry Monitor Panel */
+    /* Telemetry / Vitals Panel */
     .telemetry-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
       background: #0b1118;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
+      padding: 0.85rem;
+      margin-bottom: 1.25rem;
       font-family: var(--font-mono);
+    }
+
+    @media (min-width: 500px) {
+      .telemetry-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .vital-box {
       border-left: 2px solid var(--med-teal);
-      padding-left: 0.6rem;
+      padding-left: 0.5rem;
     }
 
     .vital-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #7a8c9e;
       text-transform: uppercase;
     }
 
     .vital-value {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: bold;
       color: var(--heading);
+      margin-top: 0.1rem;
     }
 
     .vital-alert {
@@ -130,13 +154,12 @@
     hr {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 1.5rem 0;
+      margin: 1.25rem 0;
     }
 
-    /* SOAP & Technical Sections */
     h2 {
       color: var(--heading);
-      font-size: 1.05rem;
+      font-size: 1rem;
       margin: 1.2rem 0 0.4rem;
       font-family: var(--font-mono);
       display: flex;
@@ -145,8 +168,12 @@
     }
 
     p {
-      margin-bottom: 0.9rem;
-      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.9rem;
+    }
+
+    @media (min-width: 600px) {
+      p { font-size: 0.95rem; }
     }
 
     .soap-tag {
@@ -154,13 +181,12 @@
       font-weight: bold;
     }
 
-    /* Sincere Box */
     .sincere-box {
       background: rgba(57, 173, 181, 0.06);
       border-left: 3px solid var(--med-teal);
-      padding: 1.2rem;
+      padding: 1rem;
       border-radius: 0 8px 8px 0;
-      margin: 1.5rem 0;
+      margin: 1.25rem 0;
     }
 
     .sincere-box p:last-child {
@@ -168,67 +194,100 @@
     }
 
     ul {
-      margin-left: 1.2rem;
+      margin-left: 1.1rem;
       margin-bottom: 1rem;
     }
 
     li {
       margin-bottom: 0.5rem;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
-    /* Actions Panel */
+    @media (min-width: 600px) {
+      li { font-size: 0.95rem; }
+    }
+
+    /* Actions Panel & Dodge Button Area */
     .action-panel {
-      margin-top: 2rem;
-      padding: 1.5rem;
+      margin-top: 1.5rem;
+      padding: 1.25rem 0.75rem;
       background: #17212b;
       border-radius: 8px;
       text-align: center;
       border: 1px dashed var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      min-height: 110px;
+      position: relative;
+    }
+
+    @media (min-width: 480px) {
+      .btn-container {
+        flex-direction: row;
+        min-height: 60px;
+      }
     }
 
     .btn {
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      padding: 0.75rem 1.4rem;
+      padding: 0.75rem 1.2rem;
       border-radius: 6px;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: 0.2s all ease;
-      margin: 0.4rem;
+      user-select: none;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    @media (min-width: 480px) {
+      .btn {
+        width: auto;
+        max-width: none;
+      }
     }
 
     .btn-discharge {
       background: var(--success);
       color: #090d13;
+      z-index: 1;
     }
 
-    .btn-discharge:hover {
+    .btn-discharge:active {
       background: #46e06f;
-      transform: translateY(-1px);
+      transform: scale(0.98);
     }
 
     .btn-stat {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text);
-    }
-
-    .btn-stat:hover {
-      background: var(--border);
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      z-index: 2;
     }
 
     #discharge-order {
       display: none;
       margin-top: 1.2rem;
-      padding: 1rem;
+      padding: 0.85rem;
       background: rgba(80, 250, 123, 0.1);
       border: 1px solid var(--success);
       border-radius: 6px;
       font-family: var(--font-mono);
       color: var(--success);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -248,7 +307,7 @@
     <div class="content">
       <h1>Clinical Chart & Root Cause Analysis (RCA)</h1>
       <div class="meta-line">
-        CHART ID: #SORRY-001 &bull; ATTENDING ENGINEER: Your Boyfriend &bull; CHARGE NURSE: My Favorite Person
+        CHART ID: #SORRY-001 &bull; ATTENDING: Your Boyfriend &bull; CHARGE NURSE: My Favorite Person
       </div>
 
       <div class="telemetry-grid">
@@ -261,8 +320,8 @@
           <div class="vital-value vital-alert">&infin; ms</div>
         </div>
         <div class="vital-box">
-          <div class="vital-label">Love Saturation (SpO2)</div>
-          <div class="vital-value">100% ON RA</div>
+          <div class="vital-label">SpO2 (Love)</div>
+          <div class="vital-value">100% RA</div>
         </div>
         <div class="vital-box">
           <div class="vital-label">Rx Required</div>
@@ -279,14 +338,14 @@
       <h2><span class="soap-tag">[O]</span> Objective / Diagnostic Telemetry</h2>
       <p>
         System inspection shows massive packet loss in active listening protocols. Core CPU was throttled by 
-        foolishness, resulting in an unhandled exception that hurt someone who spends her shifts saving lives and deserves unecessary drama.
+        foolishness, resulting in an unhandled exception that hurt someone who spends her shifts saving lives and deserves zero drama at home.
       </p>
 
       <h2><span class="soap-tag">[A]</span> Assessment / Sincere Note</h2>
       <div class="sincere-box">
-        <p><strong>My Mikeey, RN, BSN, Holder of My Heart,</strong></p>
+        <p><strong>Dearest [Her Name], RN, BSN, Holder of My Heart,</strong></p>
         <p>
-          Jokes and code aside, I am truly so sorry for not listening attentively :(. You work so hard, give so much of yourself taking care of others on long, exhausting shifts, and the last thing you need is stress or frustration coming from me.
+          Jokes and code aside, I am truly so sorry for [mention what happened]. You work so hard, give so much of yourself taking care of others on long, exhausting shifts, and the last thing you need is stress or frustration coming from me.
         </p>
         <p>
           I hate that I caused you hurt. I value your feelings, your peace, and our relationship more than anything. I want to be your safe harbor to decompress, not an added headache.
@@ -304,11 +363,14 @@
       <hr />
 
       <div class="action-panel">
-        <p style="font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: 1rem;">
+        <p style="font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 0.5rem;">
           <code>Awaiting Signed Discharge Orders & Forgiveness:</code>
         </p>
-        <button class="btn btn-discharge" onclick="signDischarge()">Sign Discharge & Forgive ❤️</button>
-        <button class="btn btn-stat" id="dodge-btn" onmouseover="dodge()">Withhold IV Hydration 🧋</button>
+        
+        <div class="btn-container">
+          <button class="btn btn-discharge" onclick="signDischarge()">Sign Discharge & Forgive ❤️</button>
+          <button class="btn btn-stat" id="dodge-btn">Withhold IV Hydration 🧋</button>
+        </div>
         
         <div id="discharge-order">
           ✔ <strong>DISCHARGE APPROVED:</strong> Patient forgiven. Hotfix merged into main. Transferring to cuddle care unit STAT! 🏥🚀
@@ -326,12 +388,35 @@
     document.querySelector('.terminal-window').style.borderColor = '#50fa7b';
   }
 
-  function dodge() {
-    const btn = document.getElementById('dodge-btn');
-    const x = (Math.random() - 0.5) * 140;
-    const y = (Math.random() - 0.5) * 70;
-    btn.style.transform = `translate(${x}px, ${y}px)`;
+  const dodgeBtn = document.getElementById('dodge-btn');
+  let dodgeCount = 0;
+
+  function dodge(e) {
+    if (e && e.type === 'touchstart') {
+      e.preventDefault(); // Prevent click action on mobile tap
+    }
+    
+    // Scale distance based on screen size so it stays within the box
+    const isMobile = window.innerWidth < 480;
+    const maxDistanceX = isMobile ? 60 : 110;
+    const maxDistanceY = isMobile ? 35 : 55;
+
+    // Alternate directions so it keeps bouncing around smoothly
+    const signX = (dodgeCount % 2 === 0) ? 1 : -1;
+    const signY = (Math.random() > 0.5) ? 1 : -1;
+    
+    const x = (Math.random() * maxDistanceX + 20) * signX;
+    const y = (Math.random() * maxDistanceY + 10) * signY;
+
+    dodgeBtn.style.transform = `translate(${x}px, ${y}px)`;
+    dodgeCount++;
   }
+
+  // Desktop hover
+  dodgeBtn.addEventListener('mouseenter', dodge);
+  
+  // Mobile touch/tap
+  dodgeBtn.addEventListener('touchstart', dodge, { passive: false });
 </script>
 
 </body>
